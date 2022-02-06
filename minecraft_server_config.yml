@@ -1,0 +1,30 @@
+---
+
+- name: Configuring Minecraft server
+  gather_facts: false
+  hosts: all
+  remote_user: ubuntu
+  become: yes
+  tasks:
+  - name: Add minecraft user to run server processes
+    ansible.builtin.user:
+      name: minecraft
+      comment: "Minecraft user"
+      shell: /bin/bash
+      password: $6$asd4fda$A/LWGTQFDvfmStlvtin3TdpvHAID7vkFDVsaUbPPwlUYxB94p9G4wQ.i/pO.WPdFjkwC2a0rTRT1irBllFyzR1
+
+
+  - name: Allow password authentication to the server
+    lineinfile: 
+      dest: /etc/ssh/sshd_config 
+      regexp: "^PasswordAuthentication" 
+      line: "PasswordAuthentication yes" 
+      state: present
+    notify:
+      - restart sshd
+
+  handlers:
+  - name: restart sshd
+    service:
+      name: sshd
+      state: restarted
