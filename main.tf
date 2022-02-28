@@ -46,3 +46,8 @@ resource "proxmox_vm_qemu" "minecraft1" {
   ${var.ssh_key}
   EOF
 }
+
+resource "local_file" "tf_ansible_vars" {
+  content = proxmox_vm_qemu.minecraft1[0].default_ipv4_address
+  filename = "./tf_ansible_hosts"
+}
