@@ -11,7 +11,7 @@
       name: minecraft
       comment: "Minecraft user"
       shell: /bin/bash
-      password: $6$asd4fda$A/LWGTQFDvfmStlvtin3TdpvHAID7vkFDVsaUbPPwlUYxB94p9G4wQ.i/pO.WPdFjkwC2a0rTRT1irBllFyzR1
+      password: $6$1DSFb9V1gLzczV83$EUOf3EOxxIGl3h51ci2vS8boj.Wr6FSvXkbShbR3.swCwdVXqYw4/mtEepfI8SSVSz1nsOPK14i7xNhdQ/Das.
 
 
   - name: Allow password authentication to the server
@@ -23,8 +23,29 @@
     notify:
       - restart sshd
 
+  - name: Install docker-compose to run the Minecraft server container
+    apt:
+      name: docker-compose
+      state: present
+
+  - name: Copy Minecraft server files over to VM
+    ansible.builtin.copy:
+      src: ./minecraft/
+      dest: ~minecraft/minecraft-server
+      owner: minecraft
+      group: minecraft
+
+  - name: Run Minecraft server via docker-compose
+    community.docker.docker_compose:
+      project_src: ~minecraft/minecraft-server
+    register: output
+
+  - ansible.builtin.debug:
+      var: output
+
   handlers:
   - name: restart sshd
     service:
       name: sshd
       state: restarted
+
