@@ -25,6 +25,7 @@
 
   - name: Install docker-compose to run the Minecraft server container
     apt:
+      update_cache: yes
       name: docker-compose
       state: present
 
