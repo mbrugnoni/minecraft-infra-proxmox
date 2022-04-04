@@ -10,7 +10,7 @@ provider "proxmox" {
   pm_api_url = "https://192.168.50.72:8006/api2/json"
   # api token id is in the form of: <username>@pam!<tokenId>
   pm_api_token_id     = "api_user@pam!api-token-1"
-  pm_api_token_secret = "6bdd0a35-bc4a-4b81-aef2-3388ec026fc0"
+  pm_api_token_secret = "insert"
   pm_tls_insecure     = true
 }
 
